@@ -6,10 +6,16 @@ export default {
     title:'啦啦啦',
   },
   effects: {
-    * load(_, {call, put}) {
+    * load(action, {call, put,select }) {
+      yield select(state=>{
+        console.log("==============state================")
+        console.log(state.home);
+        console.log("==============action================")
+        console.log(action.payload);
+      })
       yield call(homeApi.homepage, {
-        platform: 'wap',
-        rent_mode: 2
+        param1:"1",
+        param2:"2"
       });
       yield put({ type: 'save',payload: {
         title: '大事'
