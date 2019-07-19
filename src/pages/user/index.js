@@ -1,5 +1,5 @@
 import  { Component } from 'react';
-import { Button} from 'semantic-ui-react'
+import { Button} from 'antd'
 import { connect } from 'dva';
 
 @connect(({user}) => ({
