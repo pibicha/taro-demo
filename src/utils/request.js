@@ -1,33 +1,30 @@
-import Taro from '@tarojs/taro';
-import { baseUrl, noConsole } from '../config';
+import fetch from 'dva/fetch';
 
-export default (options = { method: 'GET', data: {} }) => {
-  if (!noConsole) {
-    console.log(`${new Date().toLocaleString()}【 M=${options.url} 】P=${JSON.stringify(options.data)}`);
+function parseJSON(response) {
+  return response.json();
+}
+
+function checkStatus(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
   }
-  return Taro.request({
-    url: baseUrl + options.url,
-    data: options.data,
-    header: {
-      'Content-Type': 'application/json',
-    },
-    method: options.method.toUpperCase(),
-  }).then((res) => {
-    const { statusCode, data } = res;
-    if (statusCode >= 200 && statusCode < 300) {
-      if (!noConsole) {
-        console.log(`${new Date().toLocaleString()}【 M=${options.url} 】【接口响应：】`,res.data);
-      }
-      if (data.status !== 'ok') {
-        Taro.showToast({
-          title: `${res.data.error.message}~` || res.data.error.code,
-          icon: 'none',
-          mask: true,
-        });
-      }
-      return data;
-    } else {
-      throw new Error(`网络请求错误，状态码${statusCode}`);
-    }
-  })
+
+  const error = new Error(response.statusText);
+  error.response = response;
+  throw error;
+}
+
+/**
+ * Requests a URL, returning a promise.
+ *
+ * @param  {string} url       The URL we want to request
+ * @param  {object} [options] The options we want to pass to "fetch"
+ * @return {object}           An object containing either "data" or "err"
+ */
+export default function request(url, options) {
+  return fetch(url, options)
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(data => ({ data }))
+    .catch(err => ({ err }));
 }

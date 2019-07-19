@@ -1,14 +1,10 @@
-import Taro, { Component } from '@tarojs/taro';
-import { View } from '@tarojs/components';
-import { connect } from '@tarojs/redux';
+import  { Component } from 'react';
+import { connect } from 'dva';
 
 @connect(({home}) => ({
   ...home,
 }))
 export default class Index extends Component {
-  config = {
-    navigationBarTitleText: '首页',
-  };
 
   componentDidMount = () => {
     this.props.dispatch({
@@ -20,10 +16,10 @@ export default class Index extends Component {
 
   render() {
     return (
-      <View>
+      <div>
         首页
         {this.props.title}
-      </View>
+      </div>
     )
   }
 }
