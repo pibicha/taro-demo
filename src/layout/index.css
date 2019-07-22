@@ -1,0 +1,23 @@
+.container {
+  display: -webkit-flex;
+  display: flex;
+}
+.initial {
+  -webkit-flex: initial;
+  flex: initial;
+  width: 200px;
+  min-width: 100px;
+}
+.none {
+  -webkit-flex: none;
+  flex: none;
+  width: 200px;
+}
+.sidebar {
+  -webkit-flex: 1;
+  flex: 1;
+}
+.main {
+  -webkit-flex: 2;
+  flex: 2;
+}
